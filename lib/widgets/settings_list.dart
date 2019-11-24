@@ -31,7 +31,9 @@ class SettingsList extends StatelessWidget {
         ),
         ListTile(
           leading: Icon(Icons.person),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, 'rosters');
+          },
           title: Text("Rosters"),
         ),
         ListTile(

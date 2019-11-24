@@ -59,26 +59,28 @@ class CalendarModel extends Model {
       sp.setString('date$i', _reminders[i].remindDate.toString());
       sp.setString('time$i', _reminders[i].remindTime.toString());
       sp.setString('text$i', _reminders[i].remindText.toString());
-       //TODO: Consider Null Text
     }
 
   }
 
+  ///Get the schedule from the API and convert it
+  ///for use in the app
   void getSched(int id) {
     Requests.fetchSched(id).then((Schedule s) {
       _schedule = s;
-      schedule.gamesMap(); 
+      _schedule.gamesMap();  
 
-      _selectedDay = DateTime.now();
-      _gamesOnDay = schedule.gamesList[_selectedDay] ?? ['No Games Today'];
+      _selectedDay = new DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0);
+      _gamesOnDay = _schedule.gamesList[_selectedDay] ?? ['No Games Today'];
       _schedLoaded = true;
       notifyListeners();
     });
   }
 
+  ///Update the currently selected day in the calendar model
   void updateDay(DateTime day, List games) {
     _selectedDay = day;
-    _gamesOnDay = schedule.gamesList[_selectedDay] ?? ['No Games Today'];
+    _gamesOnDay = _schedule.gamesList[_selectedDay] ?? ['No Games Today'];
     Game temp = schedule.getGame(_selectedDay);
     if (temp != null) {
       gameScore = temp.getScore();
@@ -93,7 +95,6 @@ class CalendarModel extends Model {
     _reminders.add(reminder);
     _reminders.sort((a,b) => a.toString().compareTo(b.toString()));
     _saveData();
-    print(reminders.toString());
     notifyListeners();
   }
 
@@ -101,7 +102,16 @@ class CalendarModel extends Model {
     _reminders.remove(reminder);
     _reminders.sort((a,b) => a.toString().compareTo(b.toString()));
     _saveData();
-    print(reminders.toString());
     notifyListeners();
   }
+
+  void removeAllReminders(){
+    _reminders.clear();
+    _saveData();
+    notifyListeners();
+  }
+
+ /* Future selectNotif(String payload) async{
+    
+  }*/
 }

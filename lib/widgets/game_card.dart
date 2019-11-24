@@ -10,11 +10,22 @@ class GameCard extends StatelessWidget {
     return Column(
       children: <Widget>[
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+                child: Text(
+              (_game.status == 'Live') ? "Game In Progress" : "Final Score",
+              style: Theme.of(context).textTheme.subtitle,
+              textAlign: TextAlign.center,
+            ))
+          ],
+        ),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Padding(
                 child: Text(
-                  _game.away,
+                  _game.away + " " + _game.awayRecord,
                   style: TextStyle(fontSize: 18),
                 ),
                 padding: EdgeInsets.only(left: 10)),
@@ -33,7 +44,7 @@ class GameCard extends StatelessWidget {
           children: <Widget>[
             Padding(
                 child: Text(
-                  _game.home,
+                  _game.home + " " + _game.homeRecord,
                   style: TextStyle(fontSize: 18),
                 ),
                 padding: EdgeInsets.only(left: 10)),

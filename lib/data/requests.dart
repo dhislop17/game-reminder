@@ -17,11 +17,10 @@ class Requests {
   static String baseRoute = 'https://statsapi.web.nhl.com/api/v1/';
   
   //TODO: Consider dynamic start and end dates
-  static String startDate = '2019-08-01';
+  static String startDate = '2019-09-01';
   static String endDate = '2020-04-10'; 
-  static String testRoute = 'https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&startDate=2019-08-17&endDate=2020-01-01';
+  static String testRoute = 'https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&startDate=2019-09-01&endDate=2019-12-31';
 
-//TODO: No longer necessary? b/c of team objects and abbreviations
   static Map<String, String> nameToAbbr = {
     'ANA': 'Anahiem Ducks',
     'ARI': 'Arizona Coyotes',

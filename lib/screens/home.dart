@@ -8,6 +8,9 @@ import 'package:sports_game_reminder/models/user_model.dart';
 import 'package:sports_game_reminder/widgets/calendar_schedule.dart';
 import 'package:sports_game_reminder/widgets/settings_list.dart';
 
+///Class for the home page which contains the calendar 
+///widget and the game card widget displayed under the
+///calendar
 class HomePage extends StatefulWidget {
   @override
   State createState() => HomePageState();
@@ -38,6 +41,7 @@ class HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.pushNamed(context, 'prefs');
                   },
+                  tooltip: "Switch Selected Team",
                 ),
               ],
             ),

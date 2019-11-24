@@ -6,9 +6,8 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:sports_game_reminder/models/calendar_model.dart';
 import 'package:sports_game_reminder/screens/reminder_form.dart';
 
+///Class for the page that displays all current and past reminders
 class ReminderPage extends StatelessWidget {
-  //Pick a day and then something comes up and says set reminder or
-//Just make cards tappable
   _buildReminderCard(Reminder reminder) {
     return Builder(
       builder: (context) => Card(
@@ -17,12 +16,24 @@ class ReminderPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Text(reminder.game.toString(),
+              padding: const EdgeInsets.all(1),
+              child: Text(reminder.game.getHome(),
                   style: Theme.of(context).textTheme.subtitle),
             ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(1),
+              child: Text(reminder.game.getAway(),
+                  style: Theme.of(context).textTheme.subtitle),
+            ),
+            Divider(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(1),
+              child: (reminder.remindText.isEmpty)
+                  ? Text("No Reminder Text", style: Theme.of(context).textTheme.body1)
+                  : Text(reminder.remindText, style: Theme.of(context).textTheme.body1),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(2),
               child: Text(
                 "Reminder set for " +
                     DateFormat.yMd().format(reminder.remindDate).toString() +
@@ -31,15 +42,18 @@ class ReminderPage extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .body1
-                    .merge(TextStyle(fontStyle: FontStyle.italic)),
+                    //.merge(TextStyle(fontStyle: FontStyle.italic)),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(3),
+              padding: const EdgeInsets.all(2),
               child: Text(
                 "Scheduled start at " +
                     DateFormat.yMd().add_jm().format(reminder.game.startTime),
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context)
+                    .textTheme
+                    .body2
+                    .merge(TextStyle(color: Colors.black.withOpacity(.4))),
               ),
             ),
           ],
@@ -50,10 +64,23 @@ class ReminderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(CalendarModel.of(context).reminders.length);
     return Scaffold(
         appBar: AppBar(
           title: Text("Reminders"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.clear_all),
+              onPressed: () {
+               CalendarModel.of(context).removeAllReminders();
+              },
+              tooltip: "Delete All Reminders",
+            ),
+            IconButton(
+              icon: Icon(Icons.alarm_on),
+              onPressed: () {},
+              tooltip: "View Completed Reminders",
+            ),
+          ],
         ),
         body: ScopedModelDescendant<CalendarModel>(
             builder: (context, child, model) {
@@ -69,7 +96,7 @@ class ReminderPage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final reminder = CalendarModel.of(context).reminders[index];
                     return Dismissible(
-                        key: Key(reminder.toString()),
+                        key: UniqueKey(),//Key(reminder.toString()),
                         background: Container(color: Colors.red),
                         onDismissed: (direction) {
                           CalendarModel.of(context).removeReminder(reminder);

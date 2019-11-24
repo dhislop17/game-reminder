@@ -11,31 +11,98 @@ class Reminder {
   DateTime remindDate; //possibly multiple
   TimeOfDay remindTime;
   String remindText;
+  bool inPast;
+  //int id;
 
   Reminder(this.game, this.remindDate, this.remindTime, this.remindText);
+
   @override
   String toString() {
-    
     return "Reminder set for " +
         DateFormat.yMd().format(remindDate).toString() +
-        " at " + remindTime.toString();
+        " at " +
+        remindTime.toString();
   }
+/*
+  void incID(){
+    id++;
+  }
+  */
 }
 
-class CreateReminderPage extends StatelessWidget {
+class CreateReminderPage extends StatefulWidget {
   final Game toRemind;
-  final _formKey = GlobalKey<FormState>();
 
   CreateReminderPage(this.toRemind);
 
   @override
+  _CreateReminderPageState createState() => _CreateReminderPageState();
+}
+
+class _CreateReminderPageState extends State<CreateReminderPage> {
+  final _formKey = GlobalKey<FormState>();
+  FlutterLocalNotificationsPlugin notify;
+  Reminder temp = new Reminder(null, null, null, null);
+
+  @override
+  void initState() {
+    super.initState();
+
+    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iOS = new IOSInitializationSettings();
+    var settings = new InitializationSettings(android, iOS);
+    notify = new FlutterLocalNotificationsPlugin();
+    notify.initialize(settings /*, onSelectNotification: selectNotif*/);
+  }
+
+  Future schedNotif() async {
+    var time = temp.remindDate;
+    var rTime = temp.remindTime;
+    //var time2 = time.add(new Duration(hours: temp.remindTime.hour, minutes: temp.remindTime.minute));
+    var time2 = new DateTime(time.year, time.month, time.day, rTime.hour, rTime.minute);
+    print(time2.toLocal().toString());
+    var channelSpecs = new AndroidNotificationDetails(
+        'game_remind', "Game Reminder Notifications", 'A notification for when a reminder is triggered',
+        autoCancel: false,
+        importance: Importance.Max,
+        priority: Priority.High,
+        ticker: "ticker",
+        enableLights: true,
+        enableVibration: true, 
+        channelShowBadge: true);
+    var iOS = new IOSNotificationDetails();
+    NotificationDetails details = NotificationDetails(channelSpecs, iOS);
+    await notify.schedule(0, temp.game.toString(), temp.remindText, time2, details);
+  }
+
+   Future showNotif() async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'game_remind', 'Game Reminder Notifications', 'A notification for when a reminder is triggered',
+    importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+    androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await notify.show(
+      0, 'plain title', 'plain body', platformChannelSpecifics,
+    payload: 'item x');
+
+  }
+
+  Future check() async {
+    var pending = await notify.pendingNotificationRequests();
+    for (var req in pending){
+      print(req.id);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Reminder temp = new Reminder(null, null, null, null);
+    //Reminder temp = new Reminder(null, null, null, null);
     return Scaffold(
         appBar: AppBar(
           title: Text("Create New Reminder"),
         ),
-        body: ReminderForm(game: toRemind, formKey: _formKey, inp: temp),
+        body: ReminderForm(game: widget.toRemind, formKey: _formKey, inp: temp),
         floatingActionButton: Builder(
           builder: (context) => FloatingActionButton(
             child: Icon(Icons.add),
@@ -48,8 +115,12 @@ class CreateReminderPage extends StatelessWidget {
               ));
             }
             else {*/
+              
               state.save();
               CalendarModel.of(context).addReminder(temp);
+              schedNotif();
+              check();
+              //showNotif();
               Navigator.of(context).pop('Successfully created reminder');
             },
           ),
@@ -146,8 +217,8 @@ class _ReminderFormState extends State<ReminderForm> {
 
   _ReminderFormState(this.toRemind, this.formKey, this.inp);
 
-  double convertTime(dynamic time){
-    return time.hour + time.minute/60;
+  double convertTime(dynamic time) {
+    return time.hour + time.minute / 60;
   }
 
   @override

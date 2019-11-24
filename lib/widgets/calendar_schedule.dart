@@ -40,6 +40,8 @@ class CalendarScheduleState extends State<CalendarSchedule> {
   }
 }
 
+///Class for the game card object that
+///is displayed under the calendar
 class GameCardList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,7 +57,7 @@ class GameCardList extends StatelessWidget {
                               child: Text(event,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 18)))
-                          : (event.status != 'Scheduled')
+                          : (event.status != 'Preview')
                               ? GameCard(event)
                               : ListTile(
                                   title: Text(event.toString()),
@@ -85,6 +87,8 @@ class GameCardList extends StatelessWidget {
   }
 }
 
+
+///Class for the calendar widget
 class CustomCalendar extends StatefulWidget {
   final size;
   const CustomCalendar(this.size);

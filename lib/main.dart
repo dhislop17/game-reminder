@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:sports_game_reminder/app_theme.dart';
 import 'package:sports_game_reminder/models/calendar_model.dart';
@@ -12,20 +11,21 @@ import 'package:sports_game_reminder/screens/home.dart';
 import 'package:sports_game_reminder/screens/landing_page.dart';
 import 'package:sports_game_reminder/screens/pick_favs_page.dart';
 import 'package:sports_game_reminder/screens/reminder_page.dart';
+import 'package:sports_game_reminder/screens/roster_page.dart';
 import 'package:sports_game_reminder/screens/settings_page.dart';
 import 'package:sports_game_reminder/screens/standings_page.dart';
 import 'package:sports_game_reminder/screens/team_prefs.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(GameReminder());
 }
 
-class MyApp extends StatefulWidget {
+class GameReminder extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _MyAppState();
+  State<StatefulWidget> createState() => _GameReminderState();
 }
 
-class _MyAppState extends State<StatefulWidget> {
+class _GameReminderState extends State<StatefulWidget> {
   //initialize the models
   final ThemeModel themeModel = ThemeModel();
   final UserModel userModel = UserModel();
@@ -54,7 +54,8 @@ class _MyAppState extends State<StatefulWidget> {
                     'prefs' : (context) => TeamPrefsPage(),
                     'settings' : (context) => SettingsPage(),
                     'standings' : (context) => StandingsPage(),
-                    'reminders' : (context) => ReminderPage()
+                    'reminders' : (context) => ReminderPage(),
+                    'rosters' : (context) => RosterPage(),
                   },
                 );
               }))),

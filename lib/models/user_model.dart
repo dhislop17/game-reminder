@@ -27,7 +27,6 @@ class UserModel extends Model {
   void _loadData() async {
     final sp = await SharedPreferences.getInstance();
     mainTeamName = sp.getString('mainTeam') ?? '';
-    int length = sp.getInt('length') ?? 0;
 
     if (mainTeamName != '') {
       mainTeamAbbr = Requests.teamFinder(mainTeamName, 'full name');

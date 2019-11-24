@@ -59,6 +59,4 @@ class Themes {
     ),
   );
 
-  //TODO: Dynamic themes and AMOLED Theme
-
 }
