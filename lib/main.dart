@@ -46,6 +46,7 @@ class _GameReminderState extends State<StatefulWidget> {
                   theme: (!ThemeModel.of(context).darkMode)
                       ? Themes.lightTheme
                       : Themes.darkTheme,
+                  //goto the landing page to determine if initial setup is necessary
                   home: LandingPage(),
                   //create routes
                   routes: {

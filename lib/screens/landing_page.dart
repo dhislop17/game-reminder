@@ -14,9 +14,10 @@ class LandingPage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               bool status = snapshot.data.getBool('introComplete');
+              //if there is saved data then go to the default team's calendar
               if (status != null && status) {
                 return HomePage();
-              } else {
+              } else { //otherwise go to the team picker page
                 return PickFavsPage();
               }
             } else {
