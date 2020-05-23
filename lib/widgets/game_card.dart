@@ -15,7 +15,7 @@ class GameCard extends StatelessWidget {
             Center(
                 child: Text(
               (_game.status == 'Live') ? "Game In Progress" : "Final Score",
-              style: Theme.of(context).textTheme.subtitle,
+              style: Theme.of(context).textTheme.subtitle2,
               textAlign: TextAlign.center,
             ))
           ],

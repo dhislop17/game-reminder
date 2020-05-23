@@ -18,19 +18,19 @@ class ReminderPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(1),
               child: Text(reminder.game.getHome(),
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme.of(context).textTheme.subtitle2),
             ),
             Padding(
               padding: const EdgeInsets.all(1),
               child: Text(reminder.game.getAway(),
-                  style: Theme.of(context).textTheme.subtitle),
+                  style: Theme.of(context).textTheme.subtitle2),
             ),
             Divider(height: 10),
             Padding(
               padding: const EdgeInsets.all(1),
               child: (reminder.remindText.isEmpty)
-                  ? Text("No Reminder Text", style: Theme.of(context).textTheme.body1)
-                  : Text(reminder.remindText, style: Theme.of(context).textTheme.body1),
+                  ? Text("No Reminder Text", style: Theme.of(context).textTheme.bodyText2)
+                  : Text(reminder.remindText, style: Theme.of(context).textTheme.bodyText2),
             ),
             Padding(
               padding: const EdgeInsets.all(2),
@@ -41,7 +41,7 @@ class ReminderPage extends StatelessWidget {
                     reminder.remindTime.format(context),
                 style: Theme.of(context)
                     .textTheme
-                    .body1
+                    .bodyText2
                     //.merge(TextStyle(fontStyle: FontStyle.italic)),
               ),
             ),
@@ -52,7 +52,7 @@ class ReminderPage extends StatelessWidget {
                     DateFormat.yMd().add_jm().format(reminder.game.startTime),
                 style: Theme.of(context)
                     .textTheme
-                    .body2
+                    .bodyText1
                     .merge(TextStyle(color: Colors.black.withOpacity(.4))),
               ),
             ),
@@ -88,7 +88,7 @@ class ReminderPage extends StatelessWidget {
             return Container(
                 child: Center(
                     child: Text('No set reminders',
-                        style: Theme.of(context).textTheme.title)));
+                        style: Theme.of(context).textTheme.headline6)));
           } else {
             if (MediaQuery.of(context).orientation == Orientation.portrait) {
               return ListView.builder(

@@ -41,10 +41,10 @@ class Themes {
     brightness: Brightness.light,
     primarySwatch: Colors.blueGrey,
     textTheme: TextTheme(
-      title: TextStyle(fontSize: 36),
-      subtitle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      body1: TextStyle(fontSize: 16),
-      body2: TextStyle(fontSize: 15)
+      headline6: TextStyle(fontSize: 36),
+      subtitle2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      bodyText2: TextStyle(fontSize: 16),
+      bodyText1: TextStyle(fontSize: 15)
     ),
   );
 
@@ -52,10 +52,10 @@ class Themes {
     brightness: Brightness.dark,
     primarySwatch: Colors.cyan,
     textTheme: TextTheme(
-      title: TextStyle(fontSize: 36),
-      subtitle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      body1: TextStyle(fontSize: 16),
-      body2: TextStyle(fontSize: 15)
+      headline6: TextStyle(fontSize: 36),
+      subtitle2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      bodyText2: TextStyle(fontSize: 16),
+      bodyText1: TextStyle(fontSize: 15)
     ),
   );
 
