@@ -5,13 +5,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sports_game_reminder/data/league.dart';
 import 'package:sports_game_reminder/data/requests.dart';
 
-
 class UserModel extends Model {
-  static UserModel of (BuildContext context) =>
-    ScopedModel.of<UserModel>(context);
-  
+  static UserModel of(BuildContext context) =>
+      ScopedModel.of<UserModel>(context);
+
   String mainTeamName;
-  String mainTeamAbbr;
+  //String mainTeamAbbr;
   List<String> favTeams;
   League league;
   Team currentTeam;
@@ -20,22 +19,22 @@ class UserModel extends Model {
   bool leagueLoaded = false;
 
   UserModel() {
-    getLeague();
+    league = new League([], [], {});
+    getNHL();
     _loadData();
   }
-  
+
   void _loadData() async {
     final sp = await SharedPreferences.getInstance();
     mainTeamName = sp.getString('mainTeam') ?? '';
 
     if (mainTeamName != '') {
-      mainTeamAbbr = Requests.teamFinder(mainTeamName, 'full name');
+      //mainTeamAbbr = Requests.teamFinder(mainTeamName, 'full name');
       favTeams = sp.getStringList('favTeams');
       print(favTeams);
       completedIntro = true;
-    }
-    else {
-      mainTeamAbbr = '';
+    } else {
+      //mainTeamAbbr = '';
       favTeams = [];
       completedIntro = false;
     }
@@ -50,38 +49,48 @@ class UserModel extends Model {
     sp.setInt('length', favTeams.length);
   }
 
+  ///adds a team to the list of favorite teams
   void addTeam(String name) {
     favTeams.add(name);
     notifyListeners();
   }
 
+  ///removes the team from the list of favorite teams
   void removeTeam(String name) {
     favTeams.remove(name);
     notifyListeners();
   }
 
+  ///Changes the current primary team to the one 
+  ///selected by the user on the update prefs page
   void setMainTeam(String name) {
     mainTeamName = name;
-    mainTeamAbbr = Requests.teamFinder(name, 'full name');
+    //mainTeamAbbr = Requests.teamFinder(name, 'full name');
     currentTeam = league.findTeam(name);
     notifyListeners();
   }
 
-  void getLeague() async {
-    await Requests.fetch()
-      .then((League temp) {
-       league = temp;
-       leagueLoaded = true;
-       if (mainTeamName != ''){
-         currentTeam = league.findTeam(mainTeamName);
-       }
-       notifyListeners();
-      });    
+  ///Fetches division jsons from API
+  void getNHL() async {
+    await Requests.fetchNHL().then(
+      (List<Division> divs) {
+        leagueLoaded = true;
+        league.divisions = divs;
+        league.createConfStats();
+        league.createLeagList();
+
+        if (mainTeamName != '') {
+          currentTeam = league.findTeam(mainTeamName);
+        }
+        
+        notifyListeners();
+      }
+    );
   }
 
-  void finishedIntro(){
+
+  void finishedIntro() {
     completedIntro = true;
     notifyListeners();
   }
- 
 }

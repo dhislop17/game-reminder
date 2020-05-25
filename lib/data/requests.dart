@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+//import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 
 import 'package:sports_game_reminder/data/schedule.dart';
@@ -55,6 +56,7 @@ class Requests {
     'WSH': 'Washington Capitals'
   };
 
+
   static String teamFinder(String name, String inputNameType) {
     String result;
 
@@ -66,21 +68,23 @@ class Requests {
     return result;
   }
 
-  static League parseData(String responseBody) {
-    final parsed = json.decode(responseBody);
-    League temp = League.fromJson(parsed);
 
-    return temp;
+  static Future<List<Division>> fetchNHL() async {
+    final response = await http.get(baseRoute + 'standings');
+
+    if (response.statusCode == 200){
+      return compute(parseNHL, response.body);
+    }
+    else {
+      throw Exception("Unable to fetch NHL data");
+    }
   }
 
-  static Future<League> fetch() async {
-    final response = await http.get(baseRoute + 'teams');
+  static List<Division> parseNHL(String responseBody){
+    final parsed = json.decode(responseBody);
+    List<Division> result = Division.createDivs(parsed);
 
-    if (response.statusCode == 200) {
-      return compute(parseData, response.body);
-    } else {
-      throw Exception();
-    }
+    return result;
   }
 
   static Future<Schedule> fetchSched(int teamId) async {
