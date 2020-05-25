@@ -40,19 +40,29 @@ class _ListHeader extends SliverPersistentHeaderDelegate {
 
 class StandingsPage extends StatelessWidget {
   ///Team row rank widget
-  Widget _rowBuilder(Team team, String rankType) {
-    return Row(children: <Widget>[
-      Expanded(
-        child: Text(team.nameWithRank(rankType)),
-        flex: 5,
+  Widget _rowBuilder(Team team, String rankType, BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, 'rosters', arguments: team);
+      },
+      child: Container(
+        height: 45,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(team.nameWithRank(rankType)),
+              flex: 5,
+            ),
+             Expanded(child: Text(team.teamStat.gamesPlayed.toString())),
+             Expanded(child: Text(team.teamStat.wins.toString())),
+             Expanded(child: Text(team.teamStat.losses.toString())),
+             Expanded(child: Text(team.teamStat.ot.toString())),
+             Expanded(child: Text(team.teamStat.points.toString())),
+             Expanded(child: Text(team.teamStat.streak.toString())),
+          ],
+        ),
       ),
-      Expanded(child: Text(team.teamStat.gamesPlayed.toString())),
-      Expanded(child: Text(team.teamStat.wins.toString())),
-      Expanded(child: Text(team.teamStat.losses.toString())),
-      Expanded(child: Text(team.teamStat.ot.toString())),
-      Expanded(child: Text(team.teamStat.points.toString())),
-      Expanded(child: Text(team.teamStat.streak.toString())),
-    ]);
+    );
   }
 
   ///Standings stat header widget
@@ -73,7 +83,7 @@ class StandingsPage extends StatelessWidget {
   }
 
   ///Section Header w/ Conference color Widget
-  Widget _confListHeader(String conf, UserModel uModel,
+  Widget _confListHeader(String conf, UserModel uModel, BuildContext context, 
       [bool divMode, String div]) {
     Color confCol;
     String longName = conf + " Conference";
@@ -119,26 +129,21 @@ class StandingsPage extends StatelessWidget {
       content: Column(
           children: (divMode == null)
               ? uModel.league.conferences[conf].teams
-                  .map((team) => InkWell(
-                        onTap: () {},
-                        child: Container(
-                            padding: EdgeInsets.only(bottom: 15),
-                            child: _rowBuilder(team, 'conf')),
-                      ))
+                  .map((team) => Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: _rowBuilder(team, 'conf', context))
+                  )
                   .toList()
               : uModel.league.divisions[divCode].teams
-                  .map((team) => InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: _rowBuilder(team, 'div'),
-                        ),
-                      ))
+                  .map((team) => Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: _rowBuilder(team, 'div', context))
+                  )
                   .toList()),
     );
   }
 
-  Widget _divHeader(String name, UserModel uModel){
+  Widget _divHeader(String name, UserModel uModel, BuildContext context){
     int divCode = uModel.league.divisions.indexWhere((division) => division.name == name);
 
     return StickyHeader(
@@ -149,13 +154,10 @@ class StandingsPage extends StatelessWidget {
       ),
       content: Column(
         children: uModel.league.divisions[divCode].teams
-          .map((team) => InkWell(
-            onTap: () {},
-            child: Container(
-              padding: EdgeInsets.only(bottom: 15),
-              child: _rowBuilder(team, 'div'),
-            ),
-          ))
+          .map((team) => Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: _rowBuilder(team, 'div', context))
+          )
           .toList() 
       ),
     );
@@ -182,41 +184,41 @@ class StandingsPage extends StatelessWidget {
                   children: (uModel.currentTeam.conf == 'Eastern')
                       ? ((uModel.currentTeam.div == 'Atlantic')
                           ? [
-                              _confListHeader('Eastern', uModel, true, 'Atlantic'),
-                              _divHeader('Metropolitan', uModel),
-                              _confListHeader('Western', uModel, true),
-                              _divHeader('Pacific', uModel),
+                              _confListHeader('Eastern', uModel, context, true, 'Atlantic'),
+                              _divHeader('Metropolitan', uModel, context),
+                              _confListHeader('Western', uModel, context, true),
+                              _divHeader('Pacific', uModel, context),
                             ]
                           : [
-                              _confListHeader('Eastern', uModel, true),
-                              _divHeader('Atlantic', uModel),
-                              _confListHeader('Western', uModel, true),
-                              _divHeader('Pacific', uModel),
+                              _confListHeader('Eastern', uModel, context, true),
+                              _divHeader('Atlantic', uModel, context),
+                              _confListHeader('Western', uModel, context, true),
+                              _divHeader('Pacific', uModel, context),
                             ])
                       : ((uModel.currentTeam.div == 'Pacific')
                           ? [
-                              _confListHeader('Western', uModel, true, 'Pacific'),
-                              _divHeader('Central', uModel),
-                              _confListHeader('Eastern', uModel, true),
-                              _divHeader('Atlantic', uModel),
+                              _confListHeader('Western', uModel, context, true, 'Pacific'),
+                              _divHeader('Central', uModel, context),
+                              _confListHeader('Eastern', uModel, context, true),
+                              _divHeader('Atlantic', uModel, context),
 
                             ]
                           : [
-                              _confListHeader('Western', uModel, true),
-                              _divHeader('Pacific', uModel),
-                              _confListHeader('Eastern', uModel, true),
-                              _divHeader('Atlantic', uModel),
+                              _confListHeader('Western', uModel, context, true),
+                              _divHeader('Pacific', uModel, context),
+                              _confListHeader('Eastern', uModel, context, true),
+                              _divHeader('Atlantic', uModel, context),
                             ])
               ),
               ListView(
                   children: (uModel.currentTeam.conf == 'Eastern')
                       ? [
-                          _confListHeader('Eastern', uModel),
-                          _confListHeader('Western', uModel)
+                          _confListHeader('Eastern', uModel, context),
+                          _confListHeader('Western', uModel, context)
                         ]
                       : [
-                          _confListHeader('Western', uModel),
-                          _confListHeader('Eastern', uModel)
+                          _confListHeader('Western', uModel, context),
+                          _confListHeader('Eastern', uModel, context)
                         ]),
               CustomScrollView(
                 slivers: <Widget>[
@@ -231,8 +233,7 @@ class StandingsPage extends StatelessWidget {
                   SliverFixedExtentList(
                     itemExtent: 45,
                     delegate: SliverChildBuilderDelegate(
-                        (context, index) =>
-                            _rowBuilder(uModel.league.teams[index], 'league'),
+                        (context, index) => _rowBuilder(uModel.league.teams[index], 'league', context),
                         childCount: uModel.league.teams.length),
                   )
                 ],
