@@ -81,7 +81,7 @@ class PickFavsPageState extends State<PickFavsPage>
         appBar: AppBar(
           centerTitle: false,
           title: Text("Select Teams to Follow"),
-          bottom: TabBar(
+          bottom: TabBar( //changes the view between the the entire NHL and selected fav teams
             tabs: [Tab(text: "All Teams"), Tab(text: "Set Primary Team")],
             controller: _tabController
           ),
@@ -91,24 +91,30 @@ class PickFavsPageState extends State<PickFavsPage>
           controller: _tabController,
           children: <Widget>[_buildTeamsList(), TeamPrefsList()],
         ),
-        floatingActionButton: (tabPos == 1)
+        //FAB will only display if on the prefered teams tab 
+        //and teams have been selected in order to finish the selection
+        floatingActionButton: (tabPos == 1 && UserModel.of(context).favTeams.length != 0) 
             ? FloatingActionButton.extended(
                 label: Text("Continue"),
                 icon: Icon(Icons.arrow_forward),
                 onPressed: () async {
+                  //save the user's choice
                   var prefs = await SharedPreferences.getInstance();
                   //model.saveData();
                   UserModel.of(context).saveData();
                   prefs.setBool('introComplete', true);
+
+                  //case when changes were made via settings menu
                   if (Navigator.canPop(context)){
                     Navigator.popUntil(context, ModalRoute.withName('settings'));
                   }
+                  //otherwise this is during inital setup
                   else {
-                    //UserModel.of(context).getLeague();
+                    //load the sched of the primary team
                     CalendarModel.of(context).getSched(
                       UserModel.of(context).currentTeam.id
                     );
-                    //CalendarModel.of(context).getSched(model.currentTeam.id);
+                    //go to the homepage
                     Navigator.pushReplacementNamed(context, 'app');
                   }
                 },

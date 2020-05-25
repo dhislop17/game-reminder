@@ -21,7 +21,7 @@ class HomePageState extends State<HomePage> {
   List<String> gameNames;
   Map<DateTime, List<String>> gameDays;
 
-  //TODO: Improve Get requests
+  //TODO: Improve Get requests --> this is done everytime 
   @override
   Widget build(BuildContext context) {
     print("home page build");

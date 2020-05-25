@@ -5,15 +5,19 @@ import 'package:sports_game_reminder/models/user_model.dart';
 class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print(UserModel.of(context).league.teams[26].toString());
     return ListView(
       children: <Widget>[
-        DrawerHeader(
-          child: Center(
-              child: Text(UserModel.of(context).mainTeamName,
-                  style: TextStyle(fontSize: 16))),
-          decoration: BoxDecoration(
-              color: ThemeModel.of(context).teamSecondaryColor,
-              border: Border.all(width: 2)),
+        Container(
+          child: DrawerHeader(
+            child: Text(
+              "Hockey Reminder", style: TextStyle(fontSize: 29, color: Colors.white)
+            ),
+            decoration: BoxDecoration(
+              color: ThemeModel.of(context).teamPrimaryColor
+            ),
+          ),
+          height: 75,
         ),
         ListTile(
           leading: Icon(Icons.access_alarms),
@@ -30,11 +34,12 @@ class SettingsList extends StatelessWidget {
           title: Text("Standings"),
         ),
         ListTile(
+          //TODO: Consider renaming this Players
           leading: Icon(Icons.person),
           onTap: () {
-            Navigator.pushNamed(context, 'rosters');
+            Navigator.pushNamed(context, 'rosters', arguments: UserModel.of(context).currentTeam);
           },
-          title: Text("Rosters"),
+          title: Text("Roster"),
         ),
         ListTile(
           leading: Icon(Icons.settings),
