@@ -44,7 +44,7 @@ class SettingsPageState extends State<SettingsPage> {
               Navigator.pushNamed(context, 'favs');
             },
           ),
-          ListTile(
+          ListTile( //TODO: Implement clearing preferences --> clearing app data
             title: Text("Clear Saved Preferences"),
             onTap: () {
               
