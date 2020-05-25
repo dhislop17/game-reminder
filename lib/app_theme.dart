@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class Themes {
   static Color nhlRed = Color(0xFFCE1126);
+  static Color eastRed = Color(0xFFC31432);
+  static Color westBlue = Color(0XFF19497C);
 
   static Map<String, List<Color>> teamColors = {
     'ANA' : [Color(0xFFF47A38), Colors.black],
@@ -31,7 +33,7 @@ class Themes {
     'SJS' : [Color(0xFF006D75), Color(0xFFEA7200)],
     'TBL' : [Color(0xFF002868), Colors.white],
     'TOR' : [Color(0xFF00205B), Colors.white],
-    'VAN' : [Color(0xFF00205B), Color(0xFF00843D)],
+    'VAN' : [Color(0xFF002056), Color(0xFF00843D)],
     'VGK' : [Color(0xFFB4975A), Color(0xFF333F42)],
     'WSH' : [Color(0xFF041E42), Color(0xFFC8102E)],
     'WPG' : [Color(0xFF041E42), Color(0xFFAC162C)]
