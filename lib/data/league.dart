@@ -1,3 +1,6 @@
+import 'package:sports_game_reminder/data/player.dart';
+import 'package:sports_game_reminder/data/requests.dart';
+
 class League {
   List<Team> teams;
   List<Division> divisions;
@@ -12,14 +15,20 @@ class League {
     conferences['Eastern'] = new Conference(name: 'Eastern', teams: eastTemp);
     conferences['Western'] = new Conference(name: 'Western', teams: westTemp);
     conferences.forEach((key, value) => value.reorderTeams());
-    print(conferences.toString());
+    //print(conferences.toString());
   }
 
   void createLeagList() {
     print("Creating League List");
     teams = conferences['Eastern'].teams + conferences['Western'].teams;
     teams.sort((a,b) => int.parse(a.teamStat.leagRank).compareTo(int.parse(b.teamStat.leagRank)));
-    print(teams.toString());
+    //print(teams.toString());
+  }
+
+  void createRosters() {
+    teams.forEach((team) { 
+      team.getRoster(team.id);
+    });
   }
 
   Team findTeam(String name) {
@@ -93,6 +102,7 @@ class Team {
   String conf;
   String div;
   Stat teamStat;
+  Roster roster;
 
   Team(this.id, this.name, this.conf, this.div, this.teamStat);
 
@@ -102,6 +112,14 @@ class Team {
     id = parsedJson['team']['id'];
     name = parsedJson['team']['name'];
     teamStat = Stat.fromJson(parsedJson);
+    //print("team $id created");
+  }
+
+  void getRoster(int id) async {
+    await Requests.fetchRoster(id).then(
+      (Roster r) {
+        roster = r; 
+      });
   }
 
   @override

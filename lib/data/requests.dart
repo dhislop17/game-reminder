@@ -1,19 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-//import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 
 import 'package:sports_game_reminder/data/schedule.dart';
 import 'package:sports_game_reminder/data/league.dart';
-
-class Player {
-  String name;
-  String pos;
-  int goals;
-  int assists;
-  int points;
-}
-
+import 'package:sports_game_reminder/data/player.dart';
 class Requests {
   static String baseRoute = 'https://statsapi.web.nhl.com/api/v1/';
   
@@ -23,7 +14,7 @@ class Requests {
   static String testRoute = 'https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&startDate=2019-09-01&endDate=2019-12-31';
 
   static Map<String, String> nameToAbbr = {
-    'ANA': 'Anahiem Ducks',
+    'ANA': 'Anaheim Ducks',
     'ARI': 'Arizona Coyotes',
     'BOS': 'Boston Bruins',
     'BUF': 'Buffalo Sabres',
@@ -103,5 +94,23 @@ class Requests {
     Schedule temp = Schedule.fromJson(parsed);
 
     return temp;
+  }
+
+  static Future<Roster> fetchRoster(int teamId) async {
+    final response = await http.get(baseRoute + 'teams/$teamId/roster');
+
+    if (response.statusCode == 200) {
+      return compute(parseRoster, response.body);
+    }
+    else {
+      throw Exception("Unable to request roster data");
+    }
+  }
+
+  static Roster parseRoster(String responseBody){
+    final parsed = json.decode(responseBody);
+    Roster roster = Roster.fromJson(parsed);
+
+    return roster;
   }
 }

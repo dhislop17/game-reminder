@@ -10,7 +10,6 @@ class UserModel extends Model {
       ScopedModel.of<UserModel>(context);
 
   String mainTeamName;
-  //String mainTeamAbbr;
   List<String> favTeams;
   League league;
   Team currentTeam;
@@ -29,12 +28,10 @@ class UserModel extends Model {
     mainTeamName = sp.getString('mainTeam') ?? '';
 
     if (mainTeamName != '') {
-      //mainTeamAbbr = Requests.teamFinder(mainTeamName, 'full name');
       favTeams = sp.getStringList('favTeams');
       print(favTeams);
       completedIntro = true;
     } else {
-      //mainTeamAbbr = '';
       favTeams = [];
       completedIntro = false;
     }
@@ -65,7 +62,6 @@ class UserModel extends Model {
   ///selected by the user on the update prefs page
   void setMainTeam(String name) {
     mainTeamName = name;
-    //mainTeamAbbr = Requests.teamFinder(name, 'full name');
     currentTeam = league.findTeam(name);
     notifyListeners();
   }
@@ -78,6 +74,7 @@ class UserModel extends Model {
         league.divisions = divs;
         league.createConfStats();
         league.createLeagList();
+        league.createRosters();
 
         if (mainTeamName != '') {
           currentTeam = league.findTeam(mainTeamName);
