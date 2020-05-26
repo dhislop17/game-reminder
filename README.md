@@ -1,6 +1,6 @@
-# Game Reminder
+# Hockey Reminder
 
-A reminder app for sports games. Currently only supports the NHL 
+A reminder app for NHL Hockey Games.
 
 ## Requirements
 - Flutter
