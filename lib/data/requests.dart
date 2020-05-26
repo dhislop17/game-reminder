@@ -113,4 +113,42 @@ class Requests {
 
     return roster;
   }
+
+  static Future<SkaterStat> fetchSkStat(int pId) async {
+    //TODO: Make these dynamic
+    final response = await http.get(baseRoute + 'people/$pId/stats?stats=statsSingleSeason&season=20192020');
+
+    if (response.statusCode == 200){
+      return compute(parseSkate, response.body);
+    }
+    else {
+      throw Exception("Unable to retrive player data");
+    }
+  }
+
+  static SkaterStat parseSkate(String responseBody){
+    final parsed = json.decode(responseBody);
+    SkaterStat result = SkaterStat.fromJson(parsed);
+
+    return result;
+  }
+
+  static Future<GoalieStat> fetchGoStat(int pId) async {
+    final response = await http.get(baseRoute + 'people/$pId/stats?stats=statsSingleSeason&season=20192020');
+
+    if (response.statusCode == 200){
+      return compute(parseGoal, response.body);
+    }
+    else {
+      print("hello");
+      throw Exception("Unable to retrive player data");
+    }
+  }
+
+  static GoalieStat parseGoal(String responseBody){
+    final parsed = json.decode(responseBody);
+    GoalieStat result = GoalieStat.fromJson(parsed);
+
+    return result;
+  }
 }

@@ -5,7 +5,6 @@ import 'package:sports_game_reminder/models/user_model.dart';
 class SettingsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print(UserModel.of(context).league.teams[26].toString());
     return ListView(
       children: <Widget>[
         Container(

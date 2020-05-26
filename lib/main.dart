@@ -10,6 +10,7 @@ import 'package:sports_game_reminder/models/theme_model.dart';
 import 'package:sports_game_reminder/screens/home.dart';
 import 'package:sports_game_reminder/screens/landing_page.dart';
 import 'package:sports_game_reminder/screens/pick_favs_page.dart';
+import 'package:sports_game_reminder/screens/player_page.dart';
 import 'package:sports_game_reminder/screens/reminder_page.dart';
 import 'package:sports_game_reminder/screens/roster_page.dart';
 import 'package:sports_game_reminder/screens/settings_page.dart';
@@ -57,6 +58,7 @@ class _GameReminderState extends State<StatefulWidget> {
                     'standings' : (context) => StandingsPage(),
                     'reminders' : (context) => ReminderPage(),
                     'rosters' : (context) => RosterPage(),
+                    'player' : (context) => PlayerPage()
                   },
                 );
               }))),
