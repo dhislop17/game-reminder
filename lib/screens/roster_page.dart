@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sports_game_reminder/data/player.dart';
+import 'package:sports_game_reminder/models/theme_model.dart';
 import 'package:sports_game_reminder/screens/player_page.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:sports_game_reminder/data/league.dart';
@@ -23,7 +24,7 @@ class RosterPage extends StatelessWidget {
             ),
             Container(
               height: 25,
-              color: Colors.grey.shade100,
+              color: (!ThemeModel.of(context).darkMode) ? Colors.grey.shade300 : Colors.grey.shade800,
               child: Row(
                 children: <Widget>[
                   Expanded(child: Text("Name"), flex: 3),

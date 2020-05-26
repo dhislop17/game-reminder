@@ -41,7 +41,7 @@ class Themes {
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    primarySwatch: Colors.blueGrey,
+    primarySwatch: Colors.deepOrange,
     textTheme: TextTheme(
       headline6: TextStyle(fontSize: 36),
       subtitle2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -52,7 +52,7 @@ class Themes {
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    primarySwatch: Colors.cyan,
+    primarySwatch: Colors.deepOrange,
     textTheme: TextTheme(
       headline6: TextStyle(fontSize: 36),
       subtitle2: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

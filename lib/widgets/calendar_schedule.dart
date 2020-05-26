@@ -50,8 +50,10 @@ class GameCardList extends StatelessWidget {
           children: CalendarModel.of(context)
               .gamesOnDay
               .map((event) => Container(
+                height: 100,
                   child: Card(
                       borderOnForeground: false,
+                      elevation: 5,
                       child: (event is String)
                           ? Center(
                               child: Text(event,

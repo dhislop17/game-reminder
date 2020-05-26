@@ -2,12 +2,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:sports_game_reminder/models/theme_model.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:sports_game_reminder/app_theme.dart';
 import 'package:sports_game_reminder/data/league.dart';
 import 'package:sports_game_reminder/models/user_model.dart';
 
-//TODO: Consider making each row tappable which would take you to that team's roster
 //TODO: For Wildcard in Div mode put some indicicator as well as line after 3rd place
 //TODO: For Conference put line after 8th
 
@@ -116,10 +116,10 @@ class StandingsPage extends StatelessWidget {
         Container(
           height: 45,
           color: confCol,
-          child: Center(child: Text(longName)),
+          child: Center(child: Text(longName, style: TextStyle(color: Colors.white),)),
         ),
         Container(
-          color: Colors.grey.shade300,
+          color: (!ThemeModel.of(context).darkMode) ? Colors.grey.shade300 : Colors.grey.shade800,
           height: 30,
           child: (divMode != null)
               ? _secHeader(standType: divNameIn)
@@ -148,7 +148,7 @@ class StandingsPage extends StatelessWidget {
 
     return StickyHeader(
       header: Container(
-        color: Colors.grey.shade300,
+        color: (!ThemeModel.of(context).darkMode) ? Colors.grey.shade300 : Colors.grey.shade700,
         height: 30,
         child:_secHeader(standType: name)
       ),
@@ -226,7 +226,7 @@ class StandingsPage extends StatelessWidget {
                     pinned: true,
                     delegate: _ListHeader(
                         Container(
-                            color: Colors.grey.shade300, child: _secHeader()),
+                            color: (!ThemeModel.of(context).darkMode) ? Colors.grey.shade300 : Colors.grey.shade600, child: _secHeader()),
                         30,
                         45),
                   ),
