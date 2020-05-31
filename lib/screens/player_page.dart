@@ -60,19 +60,19 @@ Widget _statPage(PageArgs args, BuildContext context,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('GP:' + goalieStat.gamesPlayed.toString()),
-                          Text('W:' + goalieStat.wins.toString()),
-                          Text('L:' + goalieStat.losses.toString()),
-                          Text('OTL:' + goalieStat.ot.toString()),
+                          Text('GP: ' + goalieStat.gamesPlayed.toString()),
+                          Text('W: ' + goalieStat.wins.toString()),
+                          Text('L: ' + goalieStat.losses.toString()),
+                          Text('OTL: ' + goalieStat.ot.toString()),
                         ],
                       ),
                       SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('SO:' + goalieStat.gamesPlayed.toString()),
-                          Text('Sv%:' + goalieStat.svp.toString()),
-                          Text('GAA:' + goalieStat.gaa.toString()),
+                          Text('SO: ' + goalieStat.gamesPlayed.toString()),
+                          Text('Sv%: ' + goalieStat.svp.toString()),
+                          Text('GAA: ' + goalieStat.gaa.toString()),
                         ],
                       )
                     ]
@@ -85,28 +85,28 @@ Widget _statPage(PageArgs args, BuildContext context,
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('GP:' + skaterStat.gamesPlayed.toString()),
-                          Text('G:' +  skaterStat.goals.toString()),
-                          Text('A:' + skaterStat.assists.toString()),
+                          Text('GP: ' + skaterStat.gamesPlayed.toString()),
+                          Text('G: ' +  skaterStat.goals.toString()),
+                          Text('A: ' + skaterStat.assists.toString()),
                         ],
                       ),
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('Pts:' + skaterStat.points.toString()),
-                          Text('PIM:' + skaterStat.penaltyMins.toString()),
-                          Text('+/-:' + skaterStat.plusMinus.toString()),
+                          Text('Pts: ' + skaterStat.points.toString()),
+                          Text('PIM: ' + skaterStat.penaltyMins.toString()),
+                          Text('+/-: ' + skaterStat.plusMinus.toString()),
                         ],
                       ),
                       SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          Text('PPG:' + skaterStat.ppg.toString()),
-                          Text('PPP:' + skaterStat.ppp.toString()),
-                          Text('SHG:' + skaterStat.shg.toString()),
-                          Text('SHP:' + skaterStat.shp.toString()),
+                          Text('PPG: ' + skaterStat.ppg.toString()),
+                          Text('PPP: ' + skaterStat.ppp.toString()),
+                          Text('SHG: ' + skaterStat.shg.toString()),
+                          Text('SHP: ' + skaterStat.shp.toString()),
                         ],
                       ),
                     ],
@@ -132,7 +132,16 @@ class PlayerPage extends StatelessWidget {
           if (snapshot.hasData) {
             return _statPage(args, context, goalieStat: snapshot.data);
           } else if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
+            print(snapshot.error.toString());
+            return Scaffold(
+              backgroundColor: Theme.of(context).primaryColor,
+              body: Center(
+                child: Text(
+                  "Unable to load player data", 
+                  style: Theme.of(context).textTheme.headline6,
+                  textAlign: TextAlign.center,),
+              ),
+            );
           }
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         },
@@ -144,7 +153,17 @@ class PlayerPage extends StatelessWidget {
           if (snapshot.hasData) {
             return _statPage(args, context, skaterStat: snapshot.data);
           } else if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
+            print(args.player.id);
+            print(snapshot.error.toString());
+            return Scaffold(
+              backgroundColor: Theme.of(context).primaryColor,
+              body: Center(
+                child: Text(
+                  "Unable to load player data", 
+                  style: Theme.of(context).textTheme.headline6,
+                  textAlign: TextAlign.center,),
+              ),
+            );
           }
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         },
