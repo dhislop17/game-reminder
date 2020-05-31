@@ -39,17 +39,32 @@ class SkaterStat {
       this.penaltyMins, this.plusMinus, this.ppg, this.ppp, this.shg, this.shp);
 
   SkaterStat.fromJson(Map<String, dynamic> parsedJson) {
-    Map<String, dynamic> shorten = parsedJson['stats'][0]['splits'][0]['stat'];
-    gamesPlayed = shorten['games'];
-    goals = shorten['goals'];
-    assists = shorten['assists'];
-    points = shorten['points'];
-    penaltyMins = shorten['pim'];
-    plusMinus = shorten['plusMinus'];
-    ppg = shorten['powerPlayGoals'];
-    ppp = shorten['powerPlayPoints'];
-    shg = shorten['shortHandedGoals'];
-    shp = shorten['shortHandedPoints'];
+    if (parsedJson['stats'][0]['splits'].length != 0) {
+      Map<String, dynamic> shorten =
+          parsedJson['stats'][0]['splits'][0]['stat'];
+      gamesPlayed = shorten['games'];
+      goals = shorten['goals'];
+      assists = shorten['assists'];
+      points = shorten['points'];
+      penaltyMins = shorten['pim'];
+      plusMinus = shorten['plusMinus'];
+      ppg = shorten['powerPlayGoals'];
+      ppp = shorten['powerPlayPoints'];
+      shg = shorten['shortHandedGoals'];
+      shp = shorten['shortHandedPoints'];
+    }
+    else {
+      gamesPlayed = 0;
+      goals = 0;
+      assists = 0;
+      points = 0;
+      penaltyMins = 0;
+      plusMinus = 0;
+      ppg = 0;
+      ppp = 0;
+      shg = 0;
+      shp = 0;
+    }
   }
 }
 
@@ -62,18 +77,29 @@ class GoalieStat {
   double gaa;
   double svp;
 
-  GoalieStat(
-      this.gamesPlayed, this.wins, this.losses, this.so, this.ot, this.gaa, this.svp);
+  GoalieStat(this.gamesPlayed, this.wins, this.losses, this.so, this.ot,
+      this.gaa, this.svp);
 
   GoalieStat.fromJson(Map<String, dynamic> parsedJson) {
-    Map<String, dynamic> shorten = parsedJson['stats'][0]['splits'][0]['stat'];
-    gamesPlayed = shorten['games'];
-    wins = shorten['wins'];
-    losses = shorten['losses'];
-    ot = shorten['ot'];
-    so = shorten['shutouts'];
-    gaa = shorten['goalAgainstAverage'];
-    svp = shorten['savePercentage'];
+    if (parsedJson['stats'][0]['splits'].length != 0) {
+      Map<String, dynamic> shorten = parsedJson['stats'][0]['splits'][0]['stat'];
+      gamesPlayed = shorten['games'];
+      wins = shorten['wins'];
+      losses = shorten['losses'];
+      ot = shorten['ot'];
+      so = shorten['shutouts'];
+      gaa = shorten['goalAgainstAverage'];
+      svp = shorten['savePercentage'];
+    }
+    else {
+      gamesPlayed = 0;
+      wins = 0;
+      losses = 0;
+      ot = 0;
+      so = 0;
+      gaa = 0;
+      svp = 0;
+    }
   }
 }
 
