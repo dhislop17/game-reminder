@@ -15,14 +15,12 @@ class League {
     conferences['Eastern'] = new Conference(name: 'Eastern', teams: eastTemp);
     conferences['Western'] = new Conference(name: 'Western', teams: westTemp);
     conferences.forEach((key, value) => value.reorderTeams());
-    //print(conferences.toString());
   }
 
   void createLeagList() {
     print("Creating League List");
     teams = conferences['Eastern'].teams + conferences['Western'].teams;
     teams.sort((a,b) => int.parse(a.teamStat.leagRank).compareTo(int.parse(b.teamStat.leagRank)));
-    //print(teams.toString());
   }
 
   void createRosters() {
@@ -112,7 +110,6 @@ class Team {
     id = parsedJson['team']['id'];
     name = parsedJson['team']['name'];
     teamStat = Stat.fromJson(parsedJson);
-    //print("team $id created");
   }
 
   void getRoster(int id) async {

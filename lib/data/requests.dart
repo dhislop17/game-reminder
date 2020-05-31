@@ -5,13 +5,24 @@ import "package:http/http.dart" as http;
 import 'package:sports_game_reminder/data/schedule.dart';
 import 'package:sports_game_reminder/data/league.dart';
 import 'package:sports_game_reminder/data/player.dart';
+
+class Season {
+  String startDate;
+  String endDate;
+  String seasonId;
+
+  Season({this.seasonId, this.startDate, this.endDate});
+
+  factory Season.fromJson(Map<String, dynamic> parsedJson) {
+    return Season(
+        seasonId: parsedJson['seasons'][0]['seasonId'],
+        startDate: parsedJson['seasons'][0]['regularSeasonStartDate'],
+        endDate: parsedJson['seasons'][0]['regularSeasonEndDate']);
+  }
+}
+
 class Requests {
   static String baseRoute = 'https://statsapi.web.nhl.com/api/v1/';
-  
-  //TODO: Consider dynamic start and end dates
-  static String startDate = '2019-09-01';
-  static String endDate = '2020-04-10'; 
-  static String testRoute = 'https://statsapi.web.nhl.com/api/v1/schedule?teamId=10&startDate=2019-09-01&endDate=2019-12-31';
 
   static Map<String, String> nameToAbbr = {
     'ANA': 'Anaheim Ducks',
@@ -47,7 +58,6 @@ class Requests {
     'WSH': 'Washington Capitals'
   };
 
-
   static String teamFinder(String name, String inputNameType) {
     String result;
 
@@ -59,19 +69,34 @@ class Requests {
     return result;
   }
 
+  static Future<Season> fetchSeason() async {
+    final response = await http.get(baseRoute + 'seasons/current');
+
+    if (response.statusCode == 200) {
+      return compute(parseSeason, response.body);
+    } else {
+      throw Exception("Unable to fetch season data");
+    }
+  }
+
+  static Season parseSeason(String responseBody) {
+    final parsed = json.decode(responseBody);
+    Season result = Season.fromJson(parsed);
+
+    return result;
+  }
 
   static Future<List<Division>> fetchNHL() async {
     final response = await http.get(baseRoute + 'standings');
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return compute(parseNHL, response.body);
-    }
-    else {
+    } else {
       throw Exception("Unable to fetch NHL data");
     }
   }
 
-  static List<Division> parseNHL(String responseBody){
+  static List<Division> parseNHL(String responseBody) {
     final parsed = json.decode(responseBody);
     List<Division> result = Division.createDivs(parsed);
 
@@ -79,13 +104,14 @@ class Requests {
   }
 
   static Future<Schedule> fetchSched(int teamId) async {
+    Season curr = await fetchSeason().then((Season s) => s);
     final response = await http.get(baseRoute +
-        'schedule?teamId=$teamId&startDate=$startDate&endDate=$endDate');
+        'schedule?teamId=$teamId&startDate=${curr.startDate}&endDate=${curr.endDate}');
 
     if (response.statusCode == 200) {
       return compute(parseSched, response.body);
     } else {
-      throw Exception();
+      throw Exception('Unable to fetch schedule data');
     }
   }
 
@@ -101,13 +127,12 @@ class Requests {
 
     if (response.statusCode == 200) {
       return compute(parseRoster, response.body);
-    }
-    else {
+    } else {
       throw Exception("Unable to request roster data");
     }
   }
 
-  static Roster parseRoster(String responseBody){
+  static Roster parseRoster(String responseBody) {
     final parsed = json.decode(responseBody);
     Roster roster = Roster.fromJson(parsed);
 
@@ -115,18 +140,18 @@ class Requests {
   }
 
   static Future<SkaterStat> fetchSkStat(int pId) async {
-    //TODO: Make these dynamic
-    final response = await http.get(baseRoute + 'people/$pId/stats?stats=statsSingleSeason&season=20192020');
+    Season curr = await fetchSeason().then((Season s) => s);
+    final response = await http.get(baseRoute +
+        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}');
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return compute(parseSkate, response.body);
-    }
-    else {
+    } else {
       throw Exception("Unable to retrive player data");
     }
   }
 
-  static SkaterStat parseSkate(String responseBody){
+  static SkaterStat parseSkate(String responseBody) {
     final parsed = json.decode(responseBody);
     SkaterStat result = SkaterStat.fromJson(parsed);
 
@@ -134,18 +159,18 @@ class Requests {
   }
 
   static Future<GoalieStat> fetchGoStat(int pId) async {
-    final response = await http.get(baseRoute + 'people/$pId/stats?stats=statsSingleSeason&season=20192020');
+    Season curr = await fetchSeason().then((Season s) => s);
+    final response = await http.get(baseRoute +
+        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}');
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return compute(parseGoal, response.body);
-    }
-    else {
-      print("hello");
+    } else {
       throw Exception("Unable to retrive player data");
     }
   }
 
-  static GoalieStat parseGoal(String responseBody){
+  static GoalieStat parseGoal(String responseBody) {
     final parsed = json.decode(responseBody);
     GoalieStat result = GoalieStat.fromJson(parsed);
 
