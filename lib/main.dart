@@ -15,6 +15,7 @@ import 'package:sports_game_reminder/screens/reminder_page.dart';
 import 'package:sports_game_reminder/screens/roster_page.dart';
 import 'package:sports_game_reminder/screens/settings_page.dart';
 import 'package:sports_game_reminder/screens/standings_page.dart';
+import 'package:sports_game_reminder/screens/team_list_page.dart';
 import 'package:sports_game_reminder/screens/team_prefs.dart';
 
 void main() async {
@@ -58,7 +59,8 @@ class _GameReminderState extends State<StatefulWidget> {
                     'standings' : (context) => StandingsPage(),
                     'reminders' : (context) => ReminderPage(),
                     'rosters' : (context) => RosterPage(),
-                    'player' : (context) => PlayerPage()
+                    'player' : (context) => PlayerPage(),
+                    'teams' : (context) => TeamListPage()
                   },
                 );
               }))),

@@ -3,6 +3,7 @@ import 'package:sports_game_reminder/data/requests.dart';
 
 class League {
   List<Team> teams;
+  List<Team> sortedTeams;
   List<Division> divisions;
   Map<String, Conference> conferences;
 
@@ -21,6 +22,8 @@ class League {
     print("Creating League List");
     teams = conferences['Eastern'].teams + conferences['Western'].teams;
     teams.sort((a,b) => int.parse(a.teamStat.leagRank).compareTo(int.parse(b.teamStat.leagRank)));
+    sortedTeams = List.from(teams);
+    sortedTeams.sort((a,b) => a.name.compareTo(b.name));
   }
 
   void createRosters() {

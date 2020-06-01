@@ -16,11 +16,16 @@ class RosterPage extends StatelessWidget {
           children: <Widget>[
             Container(
               height: 40,
-              color: currColor,
+              color: secCol,
               child: Center(
                   child: Container(
                       child:
-                          Text(pType, style: TextStyle(color: Colors.white)))),
+                          Text( 
+                          pType, 
+                          style: TextStyle(color:
+                           (secCol == Colors.white) 
+                           ? Colors.black 
+                           : Colors.white)))),
             ),
             Container(
               height: 25,
@@ -75,6 +80,14 @@ class RosterPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(viewTeam.name),
           backgroundColor: teamCol,
+          actions: <Widget>[
+            IconButton (
+              icon: Icon(Icons.swap_horizontal_circle),
+              onPressed: () {
+                Navigator.pushNamed(context, 'teams');
+              }
+            ),
+          ],
         ),
         body: ListView(children: [
           _playerHeader('Skaters', teamCol, secCol, viewTeam, context),

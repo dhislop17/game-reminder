@@ -33,12 +33,11 @@ class SettingsList extends StatelessWidget {
           title: Text("Standings"),
         ),
         ListTile(
-          //TODO: Consider renaming this Players
           leading: Icon(Icons.person),
           onTap: () {
             Navigator.pushNamed(context, 'rosters', arguments: UserModel.of(context).currentTeam);
           },
-          title: Text("Roster"),
+          title: Text("Rosters"),
         ),
         ListTile(
           leading: Icon(Icons.settings),
