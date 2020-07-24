@@ -33,6 +33,17 @@ class ThemeModel extends Model {
       sp.setBool('darkModeEnabled?', darkMode);
     }
 
+    clearData() async{
+      final sp = await SharedPreferences.getInstance();
+      sp.remove('darkModeEnabled?');
+      sp.remove('mainTeam');
+      teamName = '';
+      teamPrimaryColor = null;
+      teamSecondaryColor = null;
+      darkMode = false;
+      notifyListeners();
+    }
+
     setFavorite(String name) {
       teamName = Requests.teamFinder(name, 'full name');
       teamPrimaryColor = Themes.teamColors[teamName][0];

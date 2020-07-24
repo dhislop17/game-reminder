@@ -46,6 +46,19 @@ class UserModel extends Model {
     sp.setInt('length', favTeams.length);
   }
 
+  void clearData() async {
+    final sp = await SharedPreferences.getInstance();
+    sp.remove('mainTeam');
+    sp.remove('favTeams');
+    sp.remove('length');
+    sp.remove('introComplete');
+    favTeams = [];
+    mainTeamName = '';
+    currentTeam = null;
+    completedIntro = false;
+    notifyListeners();
+  }
+
   ///adds a team to the list of favorite teams
   void addTeam(String name) {
     favTeams.add(name);

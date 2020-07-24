@@ -7,7 +7,6 @@ import 'package:sports_game_reminder/data/requests.dart';
 import 'package:sports_game_reminder/data/schedule.dart';
 import 'package:sports_game_reminder/screens/reminder_form.dart';
 
-
 class CalendarModel extends Model {
   static CalendarModel of(BuildContext context) =>
       ScopedModel.of<CalendarModel>(context);
@@ -19,7 +18,7 @@ class CalendarModel extends Model {
   String gameScore = "";
   List<Reminder> _reminders;
 
-  CalendarModel(){
+  CalendarModel() {
     _loadData();
   }
 
@@ -36,21 +35,21 @@ class CalendarModel extends Model {
     int length = sp.getInt('rlength') ?? 0;
     _reminders = List();
 
-    for (int i = 0; i < length; i++){
+    for (int i = 0; i < length; i++) {
       Game game = Game.deserializeGame(sp.getString('game$i'));
       DateTime date = DateTime.parse(sp.getString('date$i'));
-      String tempTime = sp.getString('time$i').substring(10,14);
+      String tempTime = sp.getString('time$i').substring(10, 14);
       List temp = tempTime.split(':');
-      TimeOfDay time = TimeOfDay(hour: int.parse(temp[0]), minute: int.parse(temp[1]));
+      TimeOfDay time =
+          TimeOfDay(hour: int.parse(temp[0]), minute: int.parse(temp[1]));
       String msg = sp.getString("text$i");
 
       Reminder r = Reminder(game, date, time, msg);
       _reminders.add(r);
     }
-
   }
 
-  void _saveData() async{
+  void _saveData() async {
     print("Saving Reminder Data");
     final sp = await SharedPreferences.getInstance();
     sp.setInt('rlength', _reminders.length);
@@ -60,6 +59,20 @@ class CalendarModel extends Model {
       sp.setString('time$i', _reminders[i].remindTime.toString());
       sp.setString('text$i', _reminders[i].remindText.toString());
     }
+  }
+
+  void clearData() async {
+    final sp = await SharedPreferences.getInstance();
+    int length = sp.getInt('rlength') ?? 0;
+    if (length != 0) {
+      for (int i = 0; i < length; i++) {
+        sp.remove('game$i');
+        sp.remove('date$i');
+        sp.remove('time$i');
+        sp.remove('text$i');
+      }
+      sp.remove('rlength');
+    }
 
   }
 
@@ -68,9 +81,10 @@ class CalendarModel extends Model {
   void getSched(int id) {
     Requests.fetchSched(id).then((Schedule s) {
       _schedule = s;
-      _schedule.gamesMap();  
+      _schedule.gamesMap();
 
-      _selectedDay = new DateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, 12, 0, 0);
+      _selectedDay = new DateTime.utc(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, 12, 0, 0);
       _gamesOnDay = _schedule.gamesList[_selectedDay] ?? ['No Games Today'];
       _schedLoaded = true;
       notifyListeners();
@@ -84,8 +98,7 @@ class CalendarModel extends Model {
     Game temp = schedule.getGame(_selectedDay);
     if (temp != null) {
       gameScore = temp.getScore();
-    }
-    else {
+    } else {
       gameScore = "";
     }
     notifyListeners();
@@ -93,25 +106,22 @@ class CalendarModel extends Model {
 
   void addReminder(Reminder reminder) {
     _reminders.add(reminder);
-    _reminders.sort((a,b) => a.toString().compareTo(b.toString()));
+    _reminders.sort((a, b) => a.toString().compareTo(b.toString()));
     _saveData();
     notifyListeners();
   }
 
   void removeReminder(Reminder reminder) {
     _reminders.remove(reminder);
-    _reminders.sort((a,b) => a.toString().compareTo(b.toString()));
+    _reminders.sort((a, b) => a.toString().compareTo(b.toString()));
     _saveData();
     notifyListeners();
   }
 
-  void removeAllReminders(){
+  void removeAllReminders() {
     _reminders.clear();
     _saveData();
     notifyListeners();
   }
-
- /* Future selectNotif(String payload) async{
-    
-  }*/
+  
 }
