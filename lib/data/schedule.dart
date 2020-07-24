@@ -46,21 +46,20 @@ class Game {
   int awayScore;
   String score;
   String status;
-  //String gStatus;
   String homeRecord;
   String awayRecord;
 
-  Game(
-      {this.date,
-      this.home,
-      this.homeRecord,
-      this.away,
-      this.awayRecord,
-      this.startTime,
-      this.homeScore,
-      this.awayScore,
-      this.status,
-      });
+  Game({
+    this.date,
+    this.home,
+    this.homeRecord,
+    this.away,
+    this.awayRecord,
+    this.startTime,
+    this.homeScore,
+    this.awayScore,
+    this.status,
+  });
 
   Game.fromJson(Map<String, dynamic> json) {
     date = json['date'] + 'T12:00:00Z';
@@ -77,20 +76,37 @@ class Game {
     away = awayTeam['team']['name'];
     homeScore = homeTeam['score'];
     awayScore = awayTeam['score'];
-    homeRecord = '(' +
-        homeTeam['leagueRecord']['wins'].toString() +
-        '-' +
-        homeTeam['leagueRecord']['losses'].toString() +
-        '-' +
-        homeTeam['leagueRecord']['ot'].toString() +
-        ')';
-    awayRecord = '(' +
-        awayTeam['leagueRecord']['wins'].toString() +
-        '-' +
-        awayTeam['leagueRecord']['losses'].toString() +
-        '-' +
-        awayTeam['leagueRecord']['ot'].toString() +
-        ')';
+
+    if (game['gameType'] == 'R') {
+      homeRecord = '(' +
+          homeTeam['leagueRecord']['wins'].toString() +
+          '-' +
+          homeTeam['leagueRecord']['losses'].toString() +
+          '-' +
+          homeTeam['leagueRecord']['ot'].toString() +
+          ')';
+      awayRecord = '(' +
+          awayTeam['leagueRecord']['wins'].toString() +
+          '-' +
+          awayTeam['leagueRecord']['losses'].toString() +
+          '-' +
+          awayTeam['leagueRecord']['ot'].toString() +
+          ')';
+    } else if (game['gameType'] == 'P') {
+      homeRecord = '(' +
+          homeTeam['leagueRecord']['wins'].toString() +
+          '-' +
+          homeTeam['leagueRecord']['losses'].toString() +
+          ')';
+      awayRecord = '(' +
+          awayTeam['leagueRecord']['wins'].toString() +
+          '-' +
+          awayTeam['leagueRecord']['losses'].toString() +
+          ')';
+    } else {
+      homeRecord = "";
+      awayRecord = "";
+    }
   }
 
   ///Serialize the game object in order to be saved
@@ -102,16 +118,15 @@ class Game {
   static Game deserializeGame(String s) {
     List desGame = s.split(',');
     return Game(
-      date: desGame[0],
-      home: desGame[1],
-      homeRecord: desGame[2],
-      away: desGame[3],
-      awayRecord: desGame[4],
-      startTime: DateTime.parse(desGame[5]),
-      homeScore: int.parse(desGame[6]),
-      awayScore: int.parse(desGame[7]),
-      status: desGame[8],
-    );
+        date: desGame[0],
+        home: desGame[1],
+        homeRecord: desGame[2],
+        away: desGame[3],
+        awayRecord: desGame[4],
+        startTime: DateTime.parse(desGame[5]),
+        homeScore: int.parse(desGame[6]),
+        awayScore: int.parse(desGame[7]),
+        status: desGame[8]);
   }
 
   @override
@@ -119,11 +134,11 @@ class Game {
     return getAway() + " @ " + getHome();
   }
 
-  String getHome(){
+  String getHome() {
     return home + " " + homeRecord;
   }
 
-  String getAway(){
+  String getAway() {
     return away + " " + awayRecord;
   }
 

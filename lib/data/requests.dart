@@ -17,13 +17,14 @@ class Season {
     return Season(
         seasonId: parsedJson['seasons'][0]['seasonId'],
         startDate: parsedJson['seasons'][0]['regularSeasonStartDate'],
-        endDate: parsedJson['seasons'][0]['regularSeasonEndDate']);
+        endDate: parsedJson['seasons'][0]['seasonEndDate']);
   }
 }
 
 class Requests {
   static String baseRoute = 'https://statsapi.web.nhl.com/api/v1/';
 
+  // TODO: Account for Seattle Kraken once they offically join the league
   static Map<String, String> nameToAbbr = {
     'ANA': 'Anaheim Ducks',
     'ARI': 'Arizona Coyotes',
