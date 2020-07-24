@@ -5,7 +5,7 @@ class GameCard extends StatelessWidget {
   final Game _game;
 
   const GameCard(this._game);
-//TODO: Implement changes for Postponed Case b/c of rona
+  
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[

@@ -58,46 +58,50 @@ class _CreateReminderPageState extends State<CreateReminderPage> {
   Future schedNotif() async {
     var time = temp.remindDate;
     var rTime = temp.remindTime;
-    //var time2 = time.add(new Duration(hours: temp.remindTime.hour, minutes: temp.remindTime.minute));
-    var time2 = new DateTime(time.year, time.month, time.day, rTime.hour, rTime.minute);
+    var time2 =
+        new DateTime(time.year, time.month, time.day, rTime.hour, rTime.minute);
     print(time2.toLocal().toString());
     var channelSpecs = new AndroidNotificationDetails(
-        'game_remind', "Game Reminder Notifications", 'A notification for when a reminder is triggered',
+        'hockey_remind',
+        "Hockey Reminder Notifications",
+        'A notification for when a reminder is triggered',
         autoCancel: false,
         importance: Importance.Max,
         priority: Priority.High,
         ticker: "ticker",
         enableLights: true,
-        enableVibration: true, 
+        enableVibration: true,
         channelShowBadge: true);
     var iOS = new IOSNotificationDetails();
     NotificationDetails details = NotificationDetails(channelSpecs, iOS);
-    await notify.schedule(0, temp.game.toString(), temp.remindText, time2, details);
+    await notify.schedule(
+        0, temp.game.toString(), temp.remindText, time2, details);
   }
 
-   Future showNotif() async {
+  Future showNotif() async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'game_remind', 'Game Reminder Notifications', 'A notification for when a reminder is triggered',
-    importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+        'hockey_remind',
+        'Hockey Reminder Notifications',
+        'A notification for when a reminder is triggered',
+        importance: Importance.Max,
+        priority: Priority.High,
+        ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-    androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await notify.show(
-      0, 'plain title', 'plain body', platformChannelSpecifics,
-    payload: 'item x');
-
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await notify.show(0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
   }
 
   Future check() async {
     var pending = await notify.pendingNotificationRequests();
-    for (var req in pending){
+    for (var req in pending) {
       print(req.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    //Reminder temp = new Reminder(null, null, null, null);
     return Scaffold(
         appBar: AppBar(
           title: Text("Create New Reminder"),
@@ -108,14 +112,6 @@ class _CreateReminderPageState extends State<CreateReminderPage> {
             child: Icon(Icons.add),
             onPressed: () {
               final FormState state = _formKey.currentState;
-              /* if (!state.validate()){
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                      "Please ensure that all required fields are completed"),
-              ));
-            }
-            else {*/
-              
               state.save();
               CalendarModel.of(context).addReminder(temp);
               schedNotif();
@@ -274,7 +270,7 @@ class _ReminderFormState extends State<ReminderForm> {
           Divider(),
           TextFormField(
             decoration: InputDecoration(
-              labelText: "Optional Text",
+              labelText: "Optional Reminder Text",
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.blueGrey)),
               focusedBorder: OutlineInputBorder(

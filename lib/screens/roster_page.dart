@@ -7,7 +7,6 @@ import 'package:sports_game_reminder/data/league.dart';
 import 'package:sports_game_reminder/app_theme.dart';
 import 'package:sports_game_reminder/data/requests.dart';
 
-//TODO; Option to view different roster from here
 class RosterPage extends StatelessWidget {
   Widget _playerHeader(
       String pType, Color currColor, Color secCol, Team currTeam, BuildContext context) {
