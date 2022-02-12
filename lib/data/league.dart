@@ -21,13 +21,14 @@ class League {
   void createLeagList() {
     print("Creating League List");
     teams = conferences['Eastern'].teams + conferences['Western'].teams;
-    teams.sort((a,b) => int.parse(a.teamStat.leagRank).compareTo(int.parse(b.teamStat.leagRank)));
+    teams.sort((a, b) => int.parse(a.teamStat.leagRank)
+        .compareTo(int.parse(b.teamStat.leagRank)));
     sortedTeams = List.from(teams);
-    sortedTeams.sort((a,b) => a.name.compareTo(b.name));
+    sortedTeams.sort((a, b) => a.name.compareTo(b.name));
   }
 
   void createRosters() {
-    teams.forEach((team) { 
+    teams.forEach((team) {
       team.getRoster(team.id);
     });
   }
@@ -48,15 +49,15 @@ class Conference {
 
   Conference({this.name, this.teams});
 
-  void reorderTeams(){
-    teams.sort((a,b) => int.parse(a.teamStat.confRank).compareTo(int.parse(b.teamStat.confRank)));
+  void reorderTeams() {
+    teams.sort((a, b) => int.parse(a.teamStat.confRank)
+        .compareTo(int.parse(b.teamStat.confRank)));
   }
 
   @override
   String toString() {
     return name + " " + teams.toString();
   }
-
 }
 
 class Division {
@@ -69,32 +70,29 @@ class Division {
   Division.fromJson(Map<String, dynamic> parsedJson) {
     name = parsedJson['division']['name'];
     conf = parsedJson['conference']['name'];
-    teams = new List<Team>();
+    teams = [];
     parsedJson['teamRecords'].forEach((rec) {
       teams.add(new Team.fromJson(rec, name, conf));
-    });    
+    });
   }
 
-  static List<Division> createDivs(Map<String, dynamic> parsedJson){
+  static List<Division> createDivs(Map<String, dynamic> parsedJson) {
     List<Division> result;
-    if (parsedJson['records'] != null){
+    if (parsedJson['records'] != null) {
       result = [];
       parsedJson['records'].forEach((v) {
         result.add(new Division.fromJson(v));
       });
       return result;
-    }
-    else {
+    } else {
       return null;
     }
   }
-  
-  @override 
+
+  @override
   String toString() {
-    return name + " " + teams.toString();   
+    return name + " " + teams.toString();
   }
-
-
 }
 
 class Team {
@@ -116,35 +114,31 @@ class Team {
   }
 
   void getRoster(int id) async {
-    await Requests.fetchRoster(id).then(
-      (Roster r) {
-        roster = r; 
-      });
+    await Requests.fetchRoster(id).then((Roster r) {
+      roster = r;
+    });
   }
 
   @override
-  String toString(){
+  String toString() {
     return name + " " + conf;
   }
 
-  String testString(){
+  String testString() {
     return name + " " + teamStat.testString();
   }
 
-  String nameWithRank(String rankType){
-    if (rankType == 'div'){
-      return teamStat.divRank + ". " + name; 
+  String nameWithRank(String rankType) {
+    if (rankType == 'div') {
+      return teamStat.divRank + ". " + name;
+    } else if (rankType == 'conf') {
+      return teamStat.confRank + ". " + name;
+    } else {
+      return teamStat.leagRank + ". " + name;
     }
-    else if (rankType == 'conf') {
-      return teamStat.confRank + ". " + name; 
-    }
-    else {
-      return teamStat.leagRank + ". " + name; 
-    }
-    
   }
 
-  int divCode(){
+  int divCode() {
     if (div == 'Metropolitan') {
       return 0;
     } else if (div == 'Atlantic') {
@@ -155,10 +149,9 @@ class Team {
       return 3;
     }
   }
-
 }
 
-class Stat{
+class Stat {
   int points;
   int wins;
   int losses;
@@ -169,17 +162,8 @@ class Stat{
   String leagRank;
   String streak;
 
-  Stat(
-    this.points,
-    this.wins,
-    this.losses,
-    this.ot,
-    this.gamesPlayed,
-    this.divRank,
-    this.confRank,
-    this.leagRank,
-    this.streak
-  );
+  Stat(this.points, this.wins, this.losses, this.ot, this.gamesPlayed,
+      this.divRank, this.confRank, this.leagRank, this.streak);
 
   Stat.fromJson(Map<String, dynamic> parsedJson) {
     wins = parsedJson['leagueRecord']['wins'];
@@ -193,9 +177,8 @@ class Stat{
     streak = parsedJson['streak']['streakCode'];
   }
 
-    String testString() {
-    return 
-        wins.toString() +
+  String testString() {
+    return wins.toString() +
         ", " +
         losses.toString() +
         ", " +

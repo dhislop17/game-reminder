@@ -24,7 +24,6 @@ class Season {
 class Requests {
   static String baseRoute = 'https://statsapi.web.nhl.com/api/v1/';
 
-  // TODO: Account for Seattle Kraken once they offically join the league
   static Map<String, String> nameToAbbr = {
     'ANA': 'Anaheim Ducks',
     'ARI': 'Arizona Coyotes',
@@ -49,6 +48,7 @@ class Requests {
     'OTT': 'Ottawa Senators',
     'PHI': 'Philadelphia Flyers',
     'PIT': 'Pittsburgh Penguins',
+    'SEA': 'Seattle Kraken',
     'SJS': 'San Jose Sharks',
     'STL': 'St. Louis Blues',
     'TBL': 'Tampa Bay Lightning',
@@ -58,6 +58,10 @@ class Requests {
     'WPG': 'Winnipeg Jets',
     'WSH': 'Washington Capitals'
   };
+
+  static Uri _uriCreator(String routeSegments) {
+    return Uri.parse(baseRoute + routeSegments);
+  }
 
   static String teamFinder(String name, String inputNameType) {
     String result;
@@ -71,7 +75,7 @@ class Requests {
   }
 
   static Future<Season> fetchSeason() async {
-    final response = await http.get(baseRoute + 'seasons/current');
+    final response = await http.get(_uriCreator('seasons/current'));
 
     if (response.statusCode == 200) {
       return compute(parseSeason, response.body);
@@ -88,7 +92,7 @@ class Requests {
   }
 
   static Future<List<Division>> fetchNHL() async {
-    final response = await http.get(baseRoute + 'standings');
+    final response = await http.get(_uriCreator('standings'));
 
     if (response.statusCode == 200) {
       return compute(parseNHL, response.body);
@@ -106,8 +110,8 @@ class Requests {
 
   static Future<Schedule> fetchSched(int teamId) async {
     Season curr = await fetchSeason().then((Season s) => s);
-    final response = await http.get(baseRoute +
-        'schedule?teamId=$teamId&startDate=${curr.startDate}&endDate=${curr.endDate}');
+    final response = await http.get(_uriCreator(
+        'schedule?teamId=$teamId&startDate=${curr.startDate}&endDate=${curr.endDate}'));
 
     if (response.statusCode == 200) {
       return compute(parseSched, response.body);
@@ -124,7 +128,7 @@ class Requests {
   }
 
   static Future<Roster> fetchRoster(int teamId) async {
-    final response = await http.get(baseRoute + 'teams/$teamId/roster');
+    final response = await http.get(_uriCreator('teams/$teamId/roster'));
 
     if (response.statusCode == 200) {
       return compute(parseRoster, response.body);
@@ -142,8 +146,8 @@ class Requests {
 
   static Future<SkaterStat> fetchSkStat(int pId) async {
     Season curr = await fetchSeason().then((Season s) => s);
-    final response = await http.get(baseRoute +
-        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}');
+    final response = await http.get(_uriCreator(
+        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}'));
 
     if (response.statusCode == 200) {
       return compute(parseSkate, response.body);
@@ -161,8 +165,8 @@ class Requests {
 
   static Future<GoalieStat> fetchGoStat(int pId) async {
     Season curr = await fetchSeason().then((Season s) => s);
-    final response = await http.get(baseRoute +
-        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}');
+    final response = await http.get(_uriCreator(
+        'people/$pId/stats?stats=statsSingleSeason&season=${curr.seasonId}'));
 
     if (response.statusCode == 200) {
       return compute(parseGoal, response.body);

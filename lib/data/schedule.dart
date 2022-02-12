@@ -7,7 +7,7 @@ class Schedule {
   Schedule({this.games});
 
   Schedule.fromJson(Map<String, dynamic> json) {
-    games = new List<Game>();
+    games = [];
     json['dates'].forEach((g) {
       games.add(new Game.fromJson(g));
     });

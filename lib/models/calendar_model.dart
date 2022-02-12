@@ -33,7 +33,7 @@ class CalendarModel extends Model {
     final sp = await SharedPreferences.getInstance();
 
     int length = sp.getInt('rlength') ?? 0;
-    _reminders = List();
+    _reminders = [];
 
     for (int i = 0; i < length; i++) {
       Game game = Game.deserializeGame(sp.getString('game$i'));
@@ -73,7 +73,6 @@ class CalendarModel extends Model {
       }
       sp.remove('rlength');
     }
-
   }
 
   ///Get the schedule from the API and convert it
@@ -123,5 +122,4 @@ class CalendarModel extends Model {
     _saveData();
     notifyListeners();
   }
-  
 }

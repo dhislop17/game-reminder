@@ -5,7 +5,6 @@ class Themes {
   static Color eastRed = Color(0xFFC31432);
   static Color westBlue = Color(0XFF19497C);
 
-  // TODO: Account for the Seattle Kraken once they join the league offically
   static Map<String, List<Color>> teamColors = {
     'ANA': [Color(0xFFF47A38), Colors.black],
     'ARI': [Color(0xFF8C2633), Color(0xFFE2D6B5)],
@@ -30,6 +29,7 @@ class Themes {
     'OTT': [Color(0xFFC52032), Color(0xFFC2912C)],
     'PHI': [Color(0xFFF74902), Colors.black],
     'PIT': [Colors.black, Color(0xFFCFC493)],
+    'SEA': [Color(0xFF001628), Color(0xFF99D9D9)],
     'STL': [Color(0xFF002F87), Color(0xFFFCB514)],
     'SJS': [Color(0xFF006D75), Color(0xFFEA7200)],
     'TBL': [Color(0xFF002868), Colors.white],
